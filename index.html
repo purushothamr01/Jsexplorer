@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JS Explorer </title>
+
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="JS Explorer | Advanced Client-Side Javascript Enumerator">
+    <meta name="description"
+        content="A powerful, client-side only JavaScript enumerator and beautifier custom-built for bug bounty hunters, penetration testers, and security researchers.">
+    <meta name="keywords"
+        content="javascript, bug bounty, penetration testing, js enumerator, code beautifier, cyber security, infosec, recon">
+    <meta name="author" content="purushothamr01">
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://github.com/purushothamr01/Jsexplorer">
+    <meta property="og:title" content="JS Explorer | Advanced Client-Side Javascript Enumerator">
+    <meta property="og:description"
+        content="A powerful, client-side only JavaScript enumerator and beautifier custom-built for bug bounty hunters, penetration testers, and security researchers.">
+    <!-- Replace with an actual URL to your project's preview image when you host it -->
+    <meta property="og:image" content="https://raw.githubusercontent.com/purushothamr01/Jsexplorer/main/recon.png">
+    <meta property="og:site_name" content="JS Explorer">
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:url" content="https://github.com/purushothamr01/Jsexplorer">
+    <meta name="twitter:title" content="JS Explorer | Advanced Client-Side Javascript Enumerator">
+    <meta name="twitter:description"
+        content="A powerful, client-side only JavaScript enumerator and beautifier custom-built for bug bounty hunters, penetration testers, and security researchers.">
+    <meta name="twitter:image" content="https://raw.githubusercontent.com/purushothamr01/Jsexplorer/main/recon.png">
+
+    <!-- Browser & Theme Styling -->
+    <meta name="theme-color" content="#24243e">
+    <meta name="color-scheme" content="dark">
+
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🔍</text></svg>">
+
+    <!-- Resource Hints for Performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-gradient: linear-gradient(135deg, #09090b 0%, #171721 50%, #0f0c29 100%);
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-color: #f8fafc;
+            --text-muted: #94a3b8;
+            --primary-blue: #0ea5e9;
+            --primary-glow: rgba(14, 165, 233, 0.5);
+            --accent-pink: #ec4899;
+            --accent-glow: rgba(236, 72, 153, 0.5);
+            --btn-bg: rgba(255, 255, 255, 0.05);
+            --btn-hover: rgba(255, 255, 255, 0.1);
+            --input-bg: rgba(0, 0, 0, 0.4);
+            --panel-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+        }
+
+        body {
+            background: var(--bg-gradient);
+            color: var(--text-color);
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            padding: 24px 40px;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            box-sizing: border-box;
+            overflow: hidden;
+        }
+
+        /* Animated Title */
+        .header-container {
+            text-align: center;
+            margin-bottom: 28px;
+            animation: fadeInDown 0.8s ease-out;
+            position: relative;
+        }
+
+        h2 {
+            color: #ffffff;
+            margin: 0;
+            font-weight: 800;
+            font-size: 2.5rem;
+            letter-spacing: -1px;
+            background: linear-gradient(to right, #fff, #a5b4fc);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 30px var(--primary-glow);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .header-subtitle {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            margin-top: 8px;
+            font-weight: 400;
+            letter-spacing: 0.5px;
+        }
+
+        /* Glassmorphism Controls Panel */
+        .controls {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 24px;
+            width: 100%;
+            max-width: 1200px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 20px 24px;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            box-sizing: border-box;
+            box-shadow: var(--panel-shadow);
+            animation: fadeIn 1s ease-out;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Enhanced Inputs */
+        .input-wrapper {
+            position: relative;
+            flex: 1;
+            min-width: 280px;
+            max-width: 500px;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-icon {
+            position: absolute;
+            left: 14px;
+            color: var(--text-muted);
+            width: 16px;
+            height: 16px;
+            pointer-events: none;
+            transition: color 0.3s ease;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 12px 16px 12px 40px;
+            border: 1px solid var(--glass-border);
+            border-radius: 10px;
+            background: var(--input-bg);
+            color: var(--text-color);
+            font-family: 'Inter', monospace;
+            font-size: 14px;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+            box-sizing: border-box;
+        }
+
+        input[type="text"]:focus {
+            outline: none;
+            border-color: var(--primary-blue);
+            background: rgba(0, 0, 0, 0.6);
+            box-shadow: 0 0 0 3px rgba(14, 165, 233, 0.15), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        input[type="text"]:focus+.input-icon {
+            color: var(--primary-blue);
+        }
+
+        input[type="text"]::placeholder {
+            color: #64748b;
+        }
+
+        /* File Input Styling */
+        .file-upload-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+            background: var(--input-bg);
+            border: 1px dashed var(--glass-border);
+            border-radius: 10px;
+            padding: 4px 12px;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload-wrapper:hover {
+            border-color: var(--accent-pink);
+            background: rgba(236, 72, 153, 0.05);
+        }
+
+        input[type="file"] {
+            max-width: 220px;
+            color: var(--text-color);
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        input[type="file"]::file-selector-button {
+            padding: 8px 14px;
+            border-radius: 8px;
+            border: none;
+            background: var(--btn-bg);
+            color: var(--text-color);
+            cursor: pointer;
+            margin-right: 12px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            font-size: 12px;
+        }
+
+        input[type="file"]:hover::file-selector-button {
+            background: var(--btn-hover);
+            color: #fff;
+        }
+
+        /* Premium Buttons */
+        button {
+            padding: 12px 24px;
+            background: var(--primary-blue);
+            border: none;
+            border-radius: 10px;
+            color: #ffffff;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            box-shadow: 0 4px 14px var(--primary-glow);
+            position: relative;
+            overflow: hidden;
+            letter-spacing: 0.3px;
+        }
+
+        button.btn-accent {
+            background: var(--accent-pink);
+            box-shadow: 0 4px 14px var(--accent-glow);
+            color: #ffffff;
+        }
+
+        button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(rgba(255, 255, 255, 0.2), transparent);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(45deg) translateY(-100%);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        button:hover::before {
+            opacity: 1;
+        }
+
+        button:hover::after {
+            transform: rotate(45deg) translateY(100%);
+        }
+
+        button:active {
+            transform: translateY(1px);
+        }
+
+        button svg {
+            width: 18px;
+            height: 18px;
+            stroke-width: 2.5;
+        }
+
+        .divider {
+            color: #475569;
+            font-size: 13px;
+            margin: 0 8px;
+            font-weight: 700;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+
+        .main-wrapper {
+            width: 100%;
+            flex: 1;
+            display: flex;
+            gap: 24px;
+            overflow: hidden;
+            max-width: 1600px;
+            animation: slideUp 1s ease-out;
+            position: relative;
+            z-index: 5;
+        }
+
+        .editor-container {
+            flex: 3;
+            background: rgba(15, 23, 42, 0.4);
+            /* Slate 900 */
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--panel-shadow);
+            display: flex;
+            flex-direction: column;
+            min-width: 0;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .editor-container:hover {
+            border-color: rgba(14, 165, 233, 0.3);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(14, 165, 233, 0.1);
+        }
+
+        .sidebar {
+            flex: 1;
+            min-width: 320px;
+            max-width: 450px;
+            background: rgba(15, 23, 42, 0.4);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 16px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            box-shadow: var(--panel-shadow);
+            transition: all 0.3s ease;
+        }
+
+        .sidebar:hover {
+            border-color: rgba(236, 72, 153, 0.3);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(236, 72, 153, 0.1);
+        }
+
+        /* Custom Scrollbar for Sidebar */
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-thumb:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .sidebar-header {
+            padding: 16px 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid var(--glass-border);
+            font-weight: 700;
+            color: var(--text-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+            backdrop-filter: blur(12px);
+            letter-spacing: 0.5px;
+        }
+
+        .sidebar-header>span {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-shadow: 0 2px 10px rgba(255, 255, 255, 0.2);
+        }
+
+        .export-btn {
+            background: rgba(14, 165, 233, 0.15);
+            /* Primary Blue Tone */
+            border: 1px solid rgba(14, 165, 233, 0.3);
+            color: #38bdf8;
+            padding: 6px 14px;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .export-btn:hover {
+            background: rgba(14, 165, 233, 0.25);
+            color: #ffffff;
+            box-shadow: 0 0 12px rgba(14, 165, 233, 0.4);
+            transform: translateY(-1px);
+        }
+
+        .enum-section {
+            margin: 16px;
+            background: rgba(0, 0, 0, 0.4);
+            /* Darker cards */
+            border-radius: 12px;
+            border: 1px solid var(--glass-border);
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .enum-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.3);
+        }
+
+        .enum-title {
+            padding: 10px 14px;
+            font-size: 11px;
+            text-transform: uppercase;
+            font-weight: 800;
+            letter-spacing: 1px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .enum-title .badge {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Core Themes for Categories grouped by severity/type */
+        .theme-domains {
+            border-bottom: 2px solid #3fb950;
+            background: rgba(46, 160, 67, 0.1);
+            color: #56d364;
+        }
+
+        /* Green */
+        .theme-urls {
+            border-bottom: 2px solid #58a6ff;
+            background: rgba(56, 139, 253, 0.1);
+            color: #79c0ff;
+        }
+
+        /* Blue */
+        .theme-apis {
+            border-bottom: 2px solid #d2a8ff;
+            background: rgba(163, 113, 247, 0.1);
+            color: #e3b341;
+        }
+
+        /* Purple */
+        .theme-clouds {
+            border-bottom: 2px solid #f0883e;
+            background: rgba(235, 129, 50, 0.1);
+            color: #ffa657;
+        }
+
+        /* Orange */
+        .theme-secrets {
+            border-bottom: 2px solid #f85149;
+            background: rgba(218, 54, 51, 0.1);
+            color: #ff7b72;
+        }
+
+        /* Red */
+        .theme-headers {
+            border-bottom: 2px solid #8957e5;
+            background: rgba(137, 87, 229, 0.1);
+            color: #a371f7;
+        }
+
+        /* Deep Purple */
+        .theme-ips {
+            border-bottom: 2px solid #2f81f7;
+            background: rgba(47, 129, 247, 0.1);
+            color: #58a6ff;
+        }
+
+        /* Light Blue */
+
+        /* Specialized Themes */
+        .theme-graphql {
+            border-bottom: 2px solid #e10098;
+            background: rgba(225, 0, 152, 0.1);
+            color: #ff66c4;
+        }
+
+        /* Pink */
+        .theme-hidden {
+            border-bottom: 2px solid #8b949e;
+            background: rgba(139, 148, 158, 0.1);
+            color: #c9d1d9;
+        }
+
+        /* Gray */
+        .theme-admin {
+            border-bottom: 2px solid #d73a49;
+            background: rgba(215, 58, 73, 0.1);
+            color: #ff8591;
+        }
+
+        /* Crimson */
+        .theme-debug {
+            border-bottom: 2px solid #d1d5da;
+            background: rgba(209, 213, 218, 0.1);
+            color: #e1e4e8;
+        }
+
+        /* Silver */
+        .theme-network {
+            border-bottom: 2px solid #0366d6;
+            background: rgba(3, 102, 214, 0.1);
+            color: #79b8ff;
+        }
+
+        /* Royal Blue */
+        .theme-integrations {
+            border-bottom: 2px solid #6f42c1;
+            background: rgba(111, 66, 193, 0.1);
+            color: #b392f0;
+        }
+
+        /* Violet */
+        .theme-configs {
+            border-bottom: 2px solid #e36209;
+            background: rgba(227, 98, 9, 0.1);
+            color: #fb8f44;
+        }
+
+        /* Amber */
+
+        .theme-base64 {
+            border-bottom: 2px solid #f0e68c;
+            background: rgba(240, 230, 140, 0.1);
+            color: #f0e68c;
+        }
+
+        .theme-emails {
+            border-bottom: 2px solid #00ced1;
+            background: rgba(0, 206, 209, 0.1);
+            color: #00ced1;
+        }
+
+        .theme-jwts {
+            border-bottom: 2px solid #00ffcc;
+            background: rgba(0, 255, 204, 0.1);
+            color: #00ffcc;
+        }
+
+        .theme-libs {
+            border-bottom: 2px solid #ffcc00;
+            background: rgba(255, 204, 0, 0.1);
+            color: #ffcc00;
+        }
+
+        .theme-jsfiles {
+            border-bottom: 2px solid #61dafb;
+            background: rgba(97, 218, 251, 0.1);
+            color: #61dafb;
+        }
+
+        .theme-database {
+            border-bottom: 2px solid #ff6347;
+            background: rgba(255, 99, 71, 0.1);
+            color: #ff6347;
+        }
+
+        .theme-devnotes {
+            border-bottom: 2px solid #9fe2bf;
+            background: rgba(159, 226, 191, 0.1);
+            color: #9fe2bf;
+        }
+
+        .theme-sensitive {
+            border-bottom: 2px solid #ff4500;
+            background: rgba(255, 69, 0, 0.15);
+            color: #ff6633;
+        }
+
+        .theme-apidocs {
+            border-bottom: 2px solid #85ea2d;
+            background: rgba(133, 234, 45, 0.1);
+            color: #85ea2d;
+        }
+
+        .theme-crypto {
+            border-bottom: 2px solid #da70d6;
+            background: rgba(218, 112, 214, 0.1);
+            color: #da70d6;
+        }
+
+        .theme-errors {
+            border-bottom: 2px solid #ff3333;
+            background: rgba(255, 51, 51, 0.12);
+            color: #ff6666;
+        }
+
+        .enum-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            background: transparent;
+        }
+
+        .enum-item {
+            padding: 12px 14px;
+            font-size: 13px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+            cursor: pointer;
+            word-break: break-all;
+            white-space: pre-wrap;
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            color: var(--text-color);
+            background: transparent;
+        }
+
+        .enum-item:last-child {
+            border-bottom: none;
+        }
+
+        .enum-item:hover {
+            background: rgba(255, 255, 255, 0.06);
+            padding-left: 20px;
+            color: #ffffff;
+        }
+
+        .enum-item::before {
+            content: '→';
+            position: absolute;
+            left: 6px;
+            opacity: 0;
+            color: var(--primary-blue);
+            transition: opacity 0.25s, transform 0.25s;
+            transform: translateX(-5px);
+        }
+
+        .enum-item:hover::before {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .cm-search-match {
+            background-color: rgba(59, 130, 246, 0.4);
+            border-radius: 3px;
+            box-shadow: 0 0 8px rgba(59, 130, 246, 0.3);
+            padding: 2px 0;
+        }
+
+        .CodeMirror {
+            width: 100%;
+            flex: 1;
+            height: auto;
+            font-size: 14px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            background: transparent !important;
+        }
+
+        .CodeMirror-gutters {
+            background: rgba(0, 0, 0, 0.2) !important;
+            border-right: 1px solid rgba(255, 255, 255, 0.05) !important;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .github-star-container {
+            position: absolute;
+            top: 24px;
+            right: 24px;
+            z-index: 1000;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            body {
+                padding: 16px;
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto;
+            }
+
+            .github-star-container {
+                top: 16px;
+                right: 16px;
+                transform: scale(0.8);
+                transform-origin: top right;
+            }
+
+            h2 {
+                font-size: 1.8rem;
+                margin-top: 30px;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 12px;
+                gap: 12px;
+            }
+
+            input[type="text"],
+            input[type="file"],
+            button {
+                width: 100%;
+                min-width: 0;
+                max-width: none;
+                justify-content: center;
+                box-sizing: border-box;
+            }
+
+            input[type="file"]::file-selector-button {
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 8px;
+            }
+
+            .divider {
+                margin: 4px 0;
+                text-align: center;
+            }
+
+            .main-wrapper {
+                flex-direction: column;
+                height: auto;
+                overflow: visible;
+                gap: 16px;
+            }
+
+            .editor-container {
+                min-height: 350px;
+                flex: none;
+            }
+
+            .sidebar {
+                flex: none;
+                min-width: 0;
+                max-width: none;
+                height: 500px;
+                margin-bottom: 20px;
+            }
+        }
+    </style>
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.css">
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/theme/material-darker.min.css">
+</head>
+
+<body>
+
+    <div class="github-star-container">
+        <a class="github-button" href="https://github.com/purushothamr01/Jsexplorer"
+            data-color-scheme="no-preference: dark; light: dark; dark: dark;" data-icon="octicon-star" data-size="large"
+            data-show-count="true" aria-label="Star purushothamr01/Jsexplorer on GitHub">Star</a>
+    </div>
+
+    <div class="header-container">
+        <h2>
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary-blue);">
+                <circle cx="11" cy="11" r="8"></circle>
+                <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                <line x1="11" y1="8" x2="11" y2="14"></line>
+                <line x1="8" y1="11" x2="14" y2="11"></line>
+            </svg>
+            JS Explorer
+        </h2>
+        <div class="header-subtitle">Advanced Client-Side Javascript Enumerator</div>
+    </div>
+
+    <div class="controls">
+        <div class="input-wrapper">
+            <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                stroke-linecap="round" stroke-linejoin="round">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+            </svg>
+            <input type="text" id="jsurl" placeholder="https://example.com/script.js" aria-label="JS Source URL">
+        </div>
+
+        <button onclick="fetchJS()" title="Fetch content from URL">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+            </svg>
+            <span>Fetch URL</span>
+        </button>
+
+        <span class="divider">OR</span>
+
+        <div class="file-upload-wrapper">
+            <svg style="width: 16px; height: 16px; color: var(--text-muted); margin-right: 8px;" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M13 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"></path>
+                <polyline points="13 2 13 9 20 9"></polyline>
+            </svg>
+            <input type="file" id="fileInput" accept=".js,.json,.txt" title="Upload a local file">
+        </div>
+
+        <button onclick="formatJS()" class="btn-accent" title="Perfectly format the code">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+            </svg>
+            <span>Beautify Code</span>
+        </button>
+    </div>
+
+    <div class="main-wrapper">
+        <div class="editor-container">
+            <!-- Simulated Window Header & Editor Meta -->
+            <div
+                style="padding: 12px 20px; background: rgba(0,0,0,0.2); border-bottom: 1px solid var(--glass-border); font-size: 12px; font-weight: 600; color: var(--text-muted); display: flex; justify-content: space-between; align-items: center;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary-blue);">
+                        <polyline points="16 18 22 12 16 6"></polyline>
+                        <polyline points="8 6 2 12 8 18"></polyline>
+                    </svg>
+                    <span>code-editor.js</span>
+                </div>
+                <!-- Mac-like window buttons -->
+                <div style="display:flex; gap:6px;">
+                    <span
+                        style="width:12px; height:12px; border-radius:50%; background:#ef4444; box-shadow: 0 0 4px #ef444444;"></span>
+                    <span
+                        style="width:12px; height:12px; border-radius:50%; background:#eab308; box-shadow: 0 0 4px #eab30844;"></span>
+                    <span
+                        style="width:12px; height:12px; border-radius:50%; background:#22c55e; box-shadow: 0 0 4px #22c55e44;"></span>
+                </div>
+            </div>
+            <textarea id="code"></textarea>
+        </div>
+
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <span>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+                        stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent-pink);">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                        <polyline points="7 10 12 15 17 10"></polyline>
+                        <line x1="12" y1="15" x2="12" y2="3"></line>
+                    </svg>
+                    Extracted Data
+                </span>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <span id="total-count"
+                        style="font-size:11px; font-weight:bold; color:#f8fafc; background:rgba(236,72,153,0.2); border:1px solid rgba(236,72,153,0.3); padding:2px 8px; border-radius:6px; box-shadow: 0 0 10px rgba(236,72,153,0.1);">0</span>
+                    <button class="export-btn" onclick="exportData()" title="Copy findings as JSON">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        Copy
+                    </button>
+                </div>
+            </div>
+            <div id="enum-content">
+                <div
+                    style="padding: 40px 20px; text-align: center; color: var(--text-muted); font-size: 13px; display: flex; flex-direction: column; align-items: center; gap: 16px;">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                        stroke-linecap="round" stroke-linejoin="round" style="color: var(--text-muted); opacity: 0.5;">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <span>Load or beautify code to instantly<br>extract URLs, endpoints, and secrets.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/mode/javascript/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.13/addon/search/searchcursor.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.15.4/beautify.min.js"></script>
+
+    <script>
+        const editor = CodeMirror.fromTextArea(document.getElementById("code"), {
+            mode: "javascript",
+            theme: "material-darker",
+            lineNumbers: true,
+            indentUnit: 4,
+            tabSize: 4,
+            matchBrackets: true,
+            autoCloseBrackets: true,
+            lineWrapping: false
+        });
+
+        editor.setValue('// Paste your minified JS code here, upload a file, or fetch from a URL.\n\nconst test=function(){console.log("Hello Bug Hunters!")};');
+
+        async function fetchJS() {
+            const urlInput = document.getElementById("jsurl");
+            const url = urlInput.value.trim();
+
+            if (!url) {
+                alert("Please enter a valid URL.");
+                return;
+            }
+
+            const originalVal = editor.getValue();
+            editor.setValue("// Fetching data from URL...\n// Please wait, this might take a few seconds depending on the file size.");
+
+            try {
+                const proxy = "https://corsproxy.io/?";
+                const res = await fetch(proxy + encodeURIComponent(url));
+
+                if (!res.ok) throw new Error("Failed to fetch data. HTTP status: " + res.status);
+
+                const text = await res.text();
+                editor.setValue(text);
+                setTimeout(extractInfo, 100);
+
+                urlInput.value = "";
+
+            } catch (error) {
+                console.error("Error fetching JS:", error);
+                editor.setValue(originalVal);
+                alert(`Could not fetch the JavaScript file.\nError: ${error.message}\nMake sure the URL is accessible and valid.`);
+            }
+        }
+
+        document.getElementById("fileInput").addEventListener("change", function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = () => {
+                editor.setValue(reader.result);
+                setTimeout(extractInfo, 100);
+            };
+            reader.onerror = () => {
+                alert("Error reading file");
+            }
+            reader.readAsText(file);
+        });
+
+        function formatJS() {
+            let code = editor.getValue();
+
+            if (!code.trim()) {
+                alert("No code loaded in the editor.");
+                return;
+            }
+
+            try {
+                const formatted = js_beautify(code, {
+                    indent_size: 4,
+                    indent_char: " ",
+                    preserve_newlines: true,
+                    max_preserve_newlines: 2,
+                    wrap_line_length: 120,
+                    break_chained_methods: true,
+                    keep_array_indentation: false,
+                    space_before_conditional: true,
+                    unescape_strings: true,
+                    jslint_happy: true,
+                    end_with_newline: true,
+                    comma_first: false,
+                    e4x: true
+                });
+
+                editor.setValue(formatted);
+                editor.setCursor(0, 0);
+                setTimeout(extractInfo, 100);
+            } catch (err) {
+                console.error("Error beautifying JS:", err);
+                alert("Failed to format code. It might contain critical syntax errors.");
+            }
+        }
+        let activeMarks = [];
+
+        function highlightMatch(text, type) {
+            activeMarks.forEach(mark => mark.clear());
+            activeMarks = [];
+
+            const cursor = editor.getSearchCursor(text);
+            let firstMatch = null;
+
+            while (cursor.findNext()) {
+                if (!firstMatch) firstMatch = { from: cursor.from(), to: cursor.to() };
+                const mark = editor.markText(cursor.from(), cursor.to(), { className: "cm-search-match" });
+                activeMarks.push(mark);
+            }
+
+            if (firstMatch) {
+                editor.scrollIntoView(firstMatch, 100);
+                editor.setSelection(firstMatch.from, firstMatch.to);
+                editor.focus();
+            }
+        }
+
+        let extractedDataStore = {};
+
+        function exportData() {
+            if (Object.keys(extractedDataStore).length === 0) {
+                alert("No data to export!");
+                return;
+            }
+            const jsonStr = JSON.stringify(extractedDataStore, null, 2);
+            navigator.clipboard.writeText(jsonStr).then(() => {
+                alert("Results copied to clipboard as JSON!");
+            }).catch(err => {
+                console.error("Failed to copy data: ", err);
+                alert("Failed to copy data.");
+            });
+        }
+
+        function extractInfo() {
+            const code = editor.getValue();
+            if (!code.trim()) return;
+
+            const enumContent = document.getElementById("enum-content");
+            enumContent.innerHTML = "";
+            let totalCount = 0;
+            extractedDataStore = {};
+
+            const extractors = [
+                {
+                    title: "EMAIL ADDRESSES",
+                    theme: "theme-emails",
+                    getItems: (code) => {
+                        const emails = code.match(/[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}/g);
+                        return emails ? Array.from(new Set(emails)) : [];
+                    }
+                },
+                {
+                    title: "POTENTIAL BASE64 STRINGS",
+                    theme: "theme-base64",
+                    getItems: (code) => {
+                        const b64 = code.match(/(?:[A-Za-z0-9+\/]{4})*(?:[A-Za-z0-9+\/]{2}==|[A-Za-z0-9+\/]{3}=)/g);
+                        // Filter out empty/too small matches to reduce noise
+                        const valid = b64 ? b64.filter(s => s.length > 20 && !s.includes("import") && !s.includes("require")) : [];
+                        return Array.from(new Set(valid));
+                    }
+                },
+                {
+                    title: "DOMAINS & SUBDOMAINS",
+                    theme: "theme-domains",
+                    getItems: (code) => {
+                        const results = new Set();
+                        let regex = /['"](?:https?:\/\/)?([a-zA-Z0-9][a-zA-Z0-9.-]*\.[a-zA-Z]{2,10})[:\/]?/g;
+                        let match;
+                        while ((match = regex.exec(code)) !== null) {
+                            if (!match[1].includes("/") && !match[1].includes("\\")) results.add(match[1]);
+                        }
+                        return Array.from(results);
+                    }
+                },
+                {
+                    title: "INTERNAL IPs & PORTS / IPv6",
+                    theme: "theme-ips",
+                    getItems: (code) => {
+                        const ips = code.match(/\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)(?::[0-9]{1,5})?\b/g);
+                        const ipv6 = code.match(/(?:^|(?<=\s))(([0-9a-fA-F]{1,4}:){7,7}[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,7}:|([0-9a-fA-F]{1,4}:){1,6}:[0-9a-fA-F]{1,4}|([0-9a-fA-F]{1,4}:){1,5}(:[0-9a-fA-F]{1,4}){1,2}|([0-9a-fA-F]{1,4}:){1,4}(:[0-9a-fA-F]{1,4}){1,3}|([0-9a-fA-F]{1,4}:){1,3}(:[0-9a-fA-F]{1,4}){1,4}|([0-9a-fA-F]{1,4}:){1,2}(:[0-9a-fA-F]{1,4}){1,5}|[0-9a-fA-F]{1,4}:((:[0-9a-fA-F]{1,4}){1,6})|:((:[0-9a-fA-F]{1,4}){1,7}|:)|fe80:(:[0-9a-fA-F]{0,4}){0,4}%[0-9a-zA-Z]{1,}|::(ffff(:0{1,4}){0,1}:){0,1}((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])|([0-9a-fA-F]{1,4}:){1,4}:((25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9])\.){3,3}(25[0-5]|(2[0-4]|1{0,1}[0-9]){0,1}[0-9]))(?=\s|$)/gi);
+                        const localHosts = code.match(/(?:http:\/\/)?localhost:[0-9]{1,5}/g);
+                        return Array.from(new Set([...(ips || []), ...(ipv6 || []), ...(localHosts || [])]));
+                    }
+                },
+
+                {
+                    title: "FULL URLs",
+                    theme: "theme-urls",
+                    getItems: (code) => {
+                        const urls = code.match(/https?:\/\/[a-zA-Z0-9.\-_~:/?#\[\]@!$&'()*+,;=%]+/g);
+                        return urls ? Array.from(new Set(urls)) : [];
+                    }
+                },
+                {
+                    title: "DEV, STAGING & TEST URLs",
+                    theme: "theme-configs",
+                    getItems: (code) => {
+                        const envs = code.match(/https?:\/\/[a-zA-Z0-9.\-_]*(?:dev|staging|stg|test|uat|preprod)[a-zA-Z0-9.\-_]*\.[a-zA-Z]{2,10}/gi);
+                        return envs ? Array.from(new Set(envs)) : [];
+                    }
+                },
+                {
+                    title: "WEBSOCKET ENDPOINTS",
+                    theme: "theme-network",
+                    getItems: (code) => {
+                        const wss = code.match(/wss?:\/\/[a-zA-Z0-9.\-_~:/?#\[\]@!$&'()*+,;=%]+/g);
+                        return wss ? Array.from(new Set(wss)) : [];
+                    }
+                },
+                {
+                    title: "OAUTH / AUTH URLs",
+                    theme: "theme-secrets",
+                    getItems: (code) => {
+                        const oauth = code.match(/https?:\/\/[^\s"'<>]*(?:oauth|authorize|login|signin|token|sso|saml)[^\s"'<>]*/gi);
+                        return oauth ? Array.from(new Set(oauth)) : [];
+                    }
+                },
+
+                {
+                    title: "API ENDPOINTS & ROUTES",
+                    theme: "theme-apis",
+                    getItems: (code) => {
+                        const paths = new Set();
+                        let match;
+                        const regex = /['"](\/[a-zA-Z0-9_.-]+(?:\/[a-zA-Z0-9_.-]+)*\/?(?:\?[a-zA-Z0-9_.-]+=[^"']*)?)['"]/g;
+                        while ((match = regex.exec(code)) !== null) {
+                            if (match[1].length > 1 && !match[1].startsWith('//')) paths.add(match[1]);
+                        }
+                        return Array.from(paths);
+                    }
+                },
+                {
+                    title: "VERSIONED APIs (v1, v2)",
+                    theme: "theme-apis",
+                    getItems: (code) => {
+                        const paths = new Set();
+                        let match;
+                        const regex = /['"](\/v[1-9]\/[a-zA-Z0-9_.-]+(?:\/[a-zA-Z0-9_.-]+)*)['"]/gi;
+                        while ((match = regex.exec(code)) !== null) paths.add(match[1]);
+                        return Array.from(paths);
+                    }
+                },
+                {
+                    title: "GRAPHQL ENDPOINTS",
+                    theme: "theme-graphql",
+                    getItems: (code) => {
+                        const gql = code.match(/(?:https?:\/\/[a-zA-Z0-9.-]+)?\/graphql(?:\/v1)?/gi);
+                        const strGql = code.match(/['"](query|mutation)\s*[{]/gi);
+                        const results = Array.from(new Set(gql || []));
+                        if (strGql) results.push("GraphQL Query Definitions Found");
+                        return results;
+                    }
+                },
+                {
+                    title: "ADMIN / INTERNAL FUNCTIONS",
+                    theme: "theme-admin",
+                    getItems: (code) => {
+                        const admins = code.match(/['"](\/(?:admin|internal|priv|manage|dashboard|superuser|root)[a-zA-Z0-9_.\-\/]*)['"]/gi);
+                        return admins ? Array.from(new Set(admins.map(a => a.replace(/['"]/g, '')))) : [];
+                    }
+                },
+                {
+                    title: "HIDDEN ENDPOINTS",
+                    theme: "theme-hidden",
+                    getItems: (code) => {
+                        const hidden = code.match(/['"](\/(?:ping|health|status|metrics|debug|trace|dump|env)[a-zA-Z0-9_.\-\/]*)['"]/gi);
+                        return hidden ? Array.from(new Set(hidden.map(h => h.replace(/['"]/g, '')))) : [];
+                    }
+                },
+                {
+                    title: "UPLOAD / DOWNLOAD ENDPOINTS",
+                    theme: "theme-apis",
+                    getItems: (code) => {
+                        const ud = code.match(/['"](\/(?:upload|download|export|import|file|asset)[a-zA-Z0-9_.\-\/]*)['"]/gi);
+                        return ud ? Array.from(new Set(ud.map(u => u.replace(/['"]/g, '')))) : [];
+                    }
+                },
+
+                {
+                    title: "HARDCODED SECRETS / TOKENS",
+                    theme: "theme-secrets",
+                    getItems: (code) => {
+                        const secrets = new Set();
+                        let match;
+                        let regex = /(?:api[_-]?key|api[_-]?token|secret|password|bearer|auth[_-]?token|access[_-]?token|client[_-]?secret)['"]?\s*[:=]\s*['"]?([a-zA-Z0-9\-_+/=]{10,})['"]?/gi;
+                        while ((match = regex.exec(code)) !== null) secrets.add(match[1]);
+
+                        if (code.includes("BEGIN RSA PRIVATE KEY") || code.includes("BEGIN PRIVATE KEY") || code.includes("BEGIN OPENSSH PRIVATE KEY")) secrets.add("Found Private Key PEM Block");
+
+                        const looseKeys = code.match(/(?:sk_live_[0-9a-zA-Z]{24,}|ghp_[0-9a-zA-Z]{36,}|xox[bapon]-[0-9a-zA-Z]{10,}-[0-9a-zA-Z]{10,})/g);
+                        if (looseKeys) looseKeys.forEach(k => secrets.add(k));
+
+                        return Array.from(secrets);
+                    }
+                },
+                {
+                    title: "AWS / FIREBASE / CLOUD",
+                    theme: "theme-clouds",
+                    getItems: (code) => {
+                        const clouds = new Set();
+                        const akias = code.match(/AKIA[0-9A-Z]{16}/g);
+                        if (akias) akias.forEach(a => clouds.add(`AWS Key: ${a}`));
+
+                        const urls = code.match(/[a-zA-Z0-9.-]+\.(?:s3[a-zA-Z0-9.-]*\.amazonaws\.com|cloudfront\.net|firebaseio\.com)/g);
+                        if (urls) urls.forEach(u => clouds.add(u));
+
+                        const cdn = code.match(/https?:\/\/(?:cdn\.|[a-zA-Z0-9.-]*cdn[a-zA-Z0-9.-]*\.)[a-zA-Z0-9.-]+/g);
+                        if (cdn) cdn.forEach(c => clouds.add(c));
+
+                        return Array.from(clouds);
+                    }
+                },
+                {
+                    title: "3RD PARTY INTEGRATIONS",
+                    theme: "theme-integrations",
+                    getItems: (code) => {
+                        const integrations = code.match(/https?:\/\/(?:api\.)?(stripe|paypal|twilio|sendgrid|mailgun|slack|discord|github|gitlab|bitbucket)\.com[^\s"'<>]*/gi);
+                        return integrations ? Array.from(new Set(integrations)) : [];
+                    }
+                },
+                {
+                    title: "AUTHORIZATION HEADERS",
+                    theme: "theme-headers",
+                    getItems: (code) => {
+                        const headers = new Set();
+                        let match;
+                        const regex = /['"](?:Authorization|Bearer|Token|X-[a-zA-Z0-9-]+)['"]\s*:\s*['"]([^"']+)['"]/gi;
+                        while ((match = regex.exec(code)) !== null) headers.add(match[0].replace(/['"]/g, ''));
+                        return Array.from(headers);
+                    }
+                },
+
+                {
+                    title: "ENVIRONMENT VARIABLES",
+                    theme: "theme-configs",
+                    getItems: (code) => {
+                        const envs = code.match(/process\.env\.[a-zA-Z0-9_]+/g);
+                        return envs ? Array.from(new Set(envs)) : [];
+                    }
+                },
+                {
+                    title: "FEATURE FLAGS & ROLES",
+                    theme: "theme-configs",
+                    getItems: (code) => {
+                        const features = new Set();
+                        let match;
+                        const regex = /(?:is|enable|disable|use)[A-Z][a-zA-Z0-9]+(?:\s*=\s*(?:true|false))?/g;
+                        while ((match = regex.exec(code)) !== null) if (!match[0].includes("function")) features.add(match[0]);
+
+                        const roles = code.match(/['"](?:admin|superuser|manager|root|staff)['"]/gi);
+                        if (roles) roles.forEach(r => features.add(`Role: ${r}`));
+                        return Array.from(features);
+                    }
+                },
+                {
+                    title: "HIDDEN & DEBUG PARAMETERS",
+                    theme: "theme-debug",
+                    getItems: (code) => {
+                        const params = code.match(/[\?&](?:debug|test|dev|bypass|admin|force)=[^&"'\s]+/gi);
+                        return params ? Array.from(new Set(params)) : [];
+                    }
+                },
+                {
+                    title: "SOURCE MAPS / BACKUPS",
+                    theme: "theme-hidden",
+                    getItems: (code) => {
+                        const files = code.match(/[a-zA-Z0-9_.-]+\.(?:map|bak|old|sql|tar|gz|zip)/g);
+                        return files ? Array.from(new Set(files)) : [];
+                    }
+                },
+                {
+                    title: "CORS MAPS & ERRORS",
+                    theme: "theme-configs",
+                    getItems: (code) => {
+                        const cors = new Set();
+                        const cMatches = code.match(/Access-Control-Allow-(?:Origin|Headers|Methods)[^"'\n]*/gi);
+                        if (cMatches) cMatches.forEach(c => cors.add(c));
+
+                        const eMatches = code.match(/console\.(?:error|warn|debug)\(['"]([^'"]+)['"]/gi);
+                        if (eMatches) eMatches.forEach(e => cors.add(e.substring(0, 50) + "...")); // Truncated logs
+
+                        return Array.from(cors);
+                    }
+                },
+                {
+                    title: "LIBRARIES & DEPENDENCIES",
+                    theme: "theme-libs",
+                    getItems: (code) => {
+                        const libs = new Set();
+                        let match;
+                        const regex = /(?:\/\*!|\/\/)[\s]*([a-zA-Z0-9_-]+)[\s]+(?:v|version|@)?([0-9]+\.[0-9]+(?:\.[0-9]+)?)/gi;
+                        while ((match = regex.exec(code)) !== null) {
+                            libs.add(`${match[1]} v${match[2]}`);
+                        }
+
+                        const pkgMatches = code.match(/['"](react(?:-dom|-router)?|vue(?:x|-router)?|angular|lodash|axios|express|moment|jquery)['"]\s*[:]\s*['"]([\^~]?[0-9\.]+[a-zA-Z0-9_\-]*)['"]/g);
+                        if (pkgMatches) {
+                            pkgMatches.forEach(m => libs.add(m.replace(/['"]/g, '')));
+                        }
+                        return Array.from(libs);
+                    }
+                },
+                {
+                    title: "CUSTOM PROTOCOL HANDLERS",
+                    theme: "theme-network",
+                    getItems: (code) => {
+                        const protos = code.match(/['"]([a-zA-Z0-9][a-zA-Z0-9.-]+):\/\/[^"'\s]*['"]/gi);
+                        if (!protos) return [];
+                        const valid = protos.filter(p => {
+                            const lower = p.toLowerCase();
+                            return !lower.includes('http://') && !lower.includes('https://') && !lower.includes('ws://') && !lower.includes('wss://');
+                        }).map(p => p.replace(/['"]/g, ''));
+                        return Array.from(new Set(valid));
+                    }
+                },
+                {
+                    title: "JWTs & DECODED PAYLOADS",
+                    theme: "theme-jwts",
+                    getItems: (code) => {
+                        const jwts = code.match(/ey[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}\.[A-Za-z0-9_-]{10,}/g);
+                        if (!jwts) return [];
+                        const decoded = Array.from(new Set(jwts)).map(jwt => {
+                            try {
+                                const parts = jwt.split('.');
+                                const payload = JSON.parse(atob(parts[1].replace(/-/g, '+').replace(/_/g, '/')));
+                                return `${jwt}\n\n[Decoded Payload]\n${JSON.stringify(payload, null, 2)}`;
+                            } catch (e) {
+                                return jwt;
+                            }
+                        });
+                        return decoded;
+                    }
+                },
+                {
+                    title: "JS FILE LINKS & SCRIPT SOURCES",
+                    theme: "theme-jsfiles",
+                    getItems: (code) => {
+                        const links = new Set();
+
+                        // Match <script src="..."> references
+                        const scriptSrc = code.match(/(?:src|href)\s*=\s*['"]([^'"]*\.js(?:\?[^'"]*)?)['"/]/gi);
+                        if (scriptSrc) scriptSrc.forEach(s => {
+                            const m = s.match(/['"]([^'"]+)['"]/); if (m) links.add(m[1]);
+                        });
+
+                        // Match direct .js URL references
+                        const jsUrls = code.match(/https?:\/\/[a-zA-Z0-9.\-_~:\/?#\[\]@!$&'()*+,;=%]+\.js(?:\?[^\s'"<>)]*)?/gi);
+                        if (jsUrls) jsUrls.forEach(u => links.add(u));
+
+                        // Match relative .js paths in strings
+                        const relPaths = code.match(/['"](\.?\.?\/[a-zA-Z0-9_\-.\/]+\.js(?:\?[^'"]*)?)['"|`]/g);
+                        if (relPaths) relPaths.forEach(p => {
+                            const m = p.match(/['"`]([^'"`]+)['"`]/); if (m) links.add(m[1]);
+                        });
+
+                        // Match dynamic imports: import("...") or require("...")
+                        const dynImports = code.match(/(?:import|require)\s*\(\s*['"]([^'"]+\.js(?:\?[^'"]*)?)['"]/gi);
+                        if (dynImports) dynImports.forEach(d => {
+                            const m = d.match(/['"]([^'"]+)['"]/); if (m) links.add(m[1]);
+                        });
+
+                        return Array.from(links);
+                    }
+                },
+                {
+                    title: "DATABASE CONNECTION STRINGS",
+                    theme: "theme-database",
+                    getItems: (code) => {
+                        const dbs = new Set();
+                        const mongo = code.match(/mongodb(?:\+srv)?:\/\/[^\s'"<>]+/gi);
+                        if (mongo) mongo.forEach(m => dbs.add(m));
+                        const mysql = code.match(/mysql:\/\/[^\s'"<>]+/gi);
+                        if (mysql) mysql.forEach(m => dbs.add(m));
+                        const pg = code.match(/postgres(?:ql)?:\/\/[^\s'"<>]+/gi);
+                        if (pg) pg.forEach(m => dbs.add(m));
+                        const redis = code.match(/redis:\/\/[^\s'"<>]+/gi);
+                        if (redis) redis.forEach(m => dbs.add(m));
+                        const sqlite = code.match(/['"][^'"]*\.(?:sqlite|db|sqlite3)['"/]/gi);
+                        if (sqlite) sqlite.forEach(m => dbs.add(m.replace(/['"]/g, '')));
+                        return Array.from(dbs);
+                    }
+                },
+                {
+                    title: "TODO / FIXME / HACK COMMENTS",
+                    theme: "theme-devnotes",
+                    getItems: (code) => {
+                        const notes = new Set();
+                        const matches = code.match(/(?:\/\/|\*|#)\s*(?:TODO|FIXME|HACK|BUG|XXX|NOTE|WARN|DEPRECATED)[:\s-]?[^\n]{0,120}/gi);
+                        if (matches) matches.forEach(m => notes.add(m.trim()));
+                        return Array.from(notes);
+                    }
+                },
+                {
+                    title: "SENSITIVE DATA PATTERNS",
+                    theme: "theme-sensitive",
+                    getItems: (code) => {
+                        const sensitive = new Set();
+                        // Credit card patterns (Visa, MC, Amex, Discover)
+                        const cc = code.match(/\b(?:4[0-9]{12}(?:[0-9]{3})?|5[1-5][0-9]{14}|3[47][0-9]{13}|6(?:011|5[0-9]{2})[0-9]{12})\b/g);
+                        if (cc) cc.forEach(c => sensitive.add(`Credit Card: ${c}`));
+                        // US Phone numbers
+                        const phones = code.match(/(?:\+1[- ]?)?\(?[0-9]{3}\)?[- ]?[0-9]{3}[- ]?[0-9]{4}/g);
+                        if (phones) phones.forEach(p => sensitive.add(`Phone: ${p}`));
+                        // SSN
+                        const ssn = code.match(/\b[0-9]{3}-[0-9]{2}-[0-9]{4}\b/g);
+                        if (ssn) ssn.forEach(s => sensitive.add(`SSN: ${s}`));
+                        return Array.from(sensitive);
+                    }
+                },
+                {
+                    title: "SWAGGER / POSTMAN / API DOCS",
+                    theme: "theme-apidocs",
+                    getItems: (code) => {
+                        const docs = new Set();
+                        const swagger = code.match(/https?:\/\/[^\s'"<>]*(?:swagger|openapi|api-docs|redoc)[^\s'"<>]*/gi);
+                        if (swagger) swagger.forEach(s => docs.add(s));
+                        const postman = code.match(/https?:\/\/[^\s'"<>]*(?:postman|getpostman)[^\s'"<>]*/gi);
+                        if (postman) postman.forEach(p => docs.add(p));
+                        const specFiles = code.match(/['"][^'"]*(?:swagger|openapi)[^'"]*\.(?:json|yaml|yml)['"]?/gi);
+                        if (specFiles) specFiles.forEach(f => docs.add(f.replace(/['"]/g, '')));
+                        return Array.from(docs);
+                    }
+                },
+                {
+                    title: "CRYPTO & HASHING USAGE",
+                    theme: "theme-crypto",
+                    getItems: (code) => {
+                        const crypto = new Set();
+                        const funcs = code.match(/(?:crypto|CryptoJS|forge|sjcl|nacl)\.(?:[a-zA-Z0-9_.]+)/g);
+                        if (funcs) funcs.forEach(f => crypto.add(f));
+                        const algos = code.match(/['"](?:md5|sha1|sha256|sha512|aes|rsa|hmac|pbkdf2|bcrypt|argon2|des|3des|blowfish|rc4)['"]/gi);
+                        if (algos) algos.forEach(a => crypto.add(`Algorithm: ${a.replace(/['"]/g, '')}`));
+                        const subtle = code.match(/crypto\.subtle\.[a-zA-Z]+/g);
+                        if (subtle) subtle.forEach(s => crypto.add(s));
+                        return Array.from(crypto);
+                    }
+                },
+                {
+                    title: "ERROR MESSAGES & STACK TRACES",
+                    theme: "theme-errors",
+                    getItems: (code) => {
+                        const errors = new Set();
+                        const throws = code.match(/throw\s+new\s+(?:Error|TypeError|RangeError|SyntaxError)\s*\(['"]([^'"]{5,80})['"]/gi);
+                        if (throws) throws.forEach(t => errors.add(t));
+                        const catches = code.match(/catch\s*\([^)]+\)\s*\{[^}]*console\.(?:error|log)\([^)]{5,80}\)/gi);
+                        if (catches) catches.forEach(c => errors.add(c.substring(0, 100)));
+                        const stacks = code.match(/at\s+[a-zA-Z0-9_.<>]+\s+\([^)]+:[0-9]+:[0-9]+\)/g);
+                        if (stacks) stacks.forEach(s => errors.add(s));
+                        return Array.from(errors);
+                    }
+                }
+            ];
+
+            extractors.forEach(ext => {
+                const results = ext.getItems(code);
+
+                if (results.length > 0) {
+                    totalCount += results.length;
+                    extractedDataStore[ext.title] = results;
+
+                    const section = document.createElement("div");
+                    section.className = "enum-section";
+
+                    const title = document.createElement("div");
+                    title.className = `enum-title ${ext.theme}`;
+                    title.innerHTML = `<span>${ext.title}</span><span class="badge">${results.length}</span>`;
+                    section.appendChild(title);
+
+                    const list = document.createElement("ul");
+                    list.className = "enum-list";
+
+                    results.forEach(item => {
+                        const li = document.createElement("li");
+                        li.className = "enum-item";
+                        li.innerText = item;
+                        li.onclick = () => highlightMatch(item, ext.title);
+                        li.title = "Click to highlight in editor";
+                        list.appendChild(li);
+                    });
+
+                    section.appendChild(list);
+                    enumContent.appendChild(section);
+                }
+            });
+
+            document.getElementById("total-count").innerText = totalCount;
+
+            if (totalCount === 0) {
+                enumContent.innerHTML = '<div style="padding: 20px; text-align: center; color: #8b949e; font-size: 13px;">No endpoints or secrets found.</div>';
+            }
+        }
+
+        setTimeout(extractInfo, 500);
+
+    </script>
+
+    <script async defer src="https://buttons.github.io/buttons.js"></script>
+</body>
+
+</html>
