@@ -1,49 +1,65 @@
-# JS Explorer 🕵️🔍
+# JS Explorer 🕵️‍♂️🔍
 
-JS Explorer is a powerful, client-side only JavaScript enumerator and beautifier custom-built for bug bounty hunters, penetration testers, and security researchers.
+<p align="center">
+<b>A Client-Side JavaScript Reconnaissance & Analysis Tool</b><br>
+Built for Bug Bounty Hunters, Penetration Testers, and Security Researchers
+</p>
 
-![JS Explorer Preview](recon.png) 
+<p align="center">
+<img src="recon.png" alt="JS Explorer Preview" width="900">
+</p>
 
-## Features
-
-- **Blazing Fast Local Execution**: Everything happens securely within your browser. No files or data are ever sent to an external backend server.
-- **Intelligent Beautification**: Quickly turn unreadable, compressed, and minified JavaScript into beautifully structured code ready for analysis.
-- **Deep Enumeration**: Automatically scans code to instantly extract critical endpoints, hidden secrets, and valuable reconnaissance data including:
-  - Full URLs, Domains, and Subdomains 
-  - Internal IPs, Ports, and IPv6 Addresses
-  - API Endpoints, Routes, and Versioned APIs (v1, v2)
-  - GraphQL and WebSocket Endpoints
-  - Hardcoded Secrets, Tokens, API Keys, and Cloud Credentials (AWS, Firebase, etc.)
-  - JWTs and their seamlessly decoded payloads
-  - 3rd Party Integrations and Configured Headers
-- **Cyberpunk UI**: A stunning, modern interface featuring custom frosted multi-layered glass panels, neon accent glows, and a responsive layout that works flawlessly on desktop and mobile.
-- **Export Data**: Easily export all discovered endpoints and secrets as properly structured JSON for integration into your broader pentesting toolchain.
-
-## How to Use
-
-1. **Open the App**: Simply open `index.html` in any modern web browser.
-2. **Load Code**: You can load code in three ways:
-   - Provide a direct URL to a JS file (utilizes a CORS proxy for seamless fetching).
-   - Upload any local `.js`, `.json`, or `.txt` file directly into the tool.
-   - Paste raw minified code directly into the editor view.
-3. **Analyze**: Click the **Beautify Code** button to instantly format the code and trigger the deep enumeration engine.
-4. **Export**: Review the findings dynamically in the sidebar or hit the "Copy" button to grab a JSON payload of everything discovered.
-
-## Built With
-
-- **HTML5 & Vanilla JS & CSS3**
-- **CodeMirror**: For the incredibly smooth code editing experience.
-- **JS-Beautify**: For untangling spaghetti code natively in the browser.
-
-## Contributing
-
-Contributions are always welcome. Have a new extraction Regex payload or a UI improvement idea? 
-1. Fork the Project
-2. Create your Feature Branch
-3. Commit your Changes
-4. Push to the Branch
-5. Open a Pull Request
+<p align="center">
+<img src="https://img.shields.io/badge/Platform-Web-blue">
+<img src="https://img.shields.io/badge/Execution-Client%20Side-green">
+<img src="https://img.shields.io/badge/Open%20Source-Yes-brightgreen">
+<img src="https://img.shields.io/badge/License-MIT-orange">
+</p>
 
 ---
 
-*Disclaimer: JS Explorer is designed for ethical hacking, bug bounty hunting, and educational purposes. Do not use this tool on systems or codebases you do not have explicitly written permission to test.*
+# Overview
+
+Modern web applications ship **large, minified JavaScript bundles** that often contain valuable reconnaissance data such as hidden API routes, internal services, configuration objects, and embedded credentials.
+
+Manually analyzing these bundles can be time-consuming.
+
+**JS Explorer** is a lightweight **browser-based JavaScript analysis tool** that helps security researchers quickly extract useful information from JavaScript files.
+
+The tool runs **entirely inside the browser**, meaning:
+
+- No backend server
+- No data uploads
+- No remote processing
+- Complete local analysis
+
+This allows researchers to safely analyze **sensitive application code** during bug bounty and penetration testing engagements.
+
+---
+
+
+
+# Inspiration
+
+JS Explorer was built after exploring several JavaScript analysis and reconnaissance techniques commonly used in the **bug bounty and security research community**.
+
+While developing this project, I studied approaches used in other open-source tools and combined those ideas with my own experimentation to create a **lightweight browser-based solution**.
+
+The goal was to bring multiple capabilities such as **JavaScript beautification, endpoint discovery, secret detection, and recon data extraction** into a single tool that runs entirely in the browser.
+
+Huge credit goes to the **open-source security community** for the inspiration and knowledge that helped shape this project.
+
+---
+
+
+
+
+
+
+
+
+
+
+<p align="center">
+Made for the Bug Bounty & Security Research Community
+</p>
